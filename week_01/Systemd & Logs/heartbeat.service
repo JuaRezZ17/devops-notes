@@ -1,0 +1,11 @@
+[Unit]
+Description=Servicio de latido de RAM personalizado
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/heartbeat.sh
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
