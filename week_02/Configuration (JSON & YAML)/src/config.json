@@ -1,0 +1,5 @@
+{
+    "db_host": "10.0.8.15",
+    "port": "5432",
+    "debug_mode": true
+}
