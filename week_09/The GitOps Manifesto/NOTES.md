@@ -37,7 +37,7 @@ Code -> Build (CI updates the YAML in Git) -> The internal agent detects the cha
 
         - Security by design: Minimises the attack surface by limiting permissions solely to what the internal agent (via RBAC in Kubernetes) is permitted to do.
 
-### Map out a mental workflow in your notes. What happens if a developer changes the number of replicas in the K8s web console from 3 to 5? How does GitOps respond?
+### Exercise 1: Map out a mental workflow in your notes. What happens if a developer changes the number of replicas in the K8s web console from 3 to 5? How does GitOps respond?
 1. **Manual Intervention (Drift):** The developer modifies the cluster directly.
     - Current cluster state: 5 replicas.
 
@@ -52,7 +52,7 @@ Code -> Build (CI updates the YAML in Git) -> The internal agent detects the cha
 4. **Reconciliation (Correction):** If ‘Auto-sync’ and ‘Self-heal’ are enabled: The agent acts decisively. It applies the Git state to the cluster. It automatically sends the command to scale down the replicas to 3, destroying the 2 pods that the developer created manually.
     - If only alerts are configured, the agent does not destroy the pods, but sends an alert (to Slack, Teams, etc.) notifying the team that someone has manually altered the cluster and that the actual state has deviated from the repository.
 
-### Create a folder on your local machine called gitops-infra-repo. This structure will be your foundation for the rest of the week:
+### Exercise 2: Create a folder on your local machine called gitops-infra-repo. This structure will be your foundation for the rest of the week:
 ```
 gitops-infra-repo/
 ├── apps/
