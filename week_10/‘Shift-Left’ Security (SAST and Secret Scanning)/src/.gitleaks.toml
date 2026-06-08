@@ -1,0 +1,13 @@
+title = "Python Security Lab Gitleaks Config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "aws-example-secret-key"
+description = "Detect fake AWS secret key used for training"
+regex = '''AWS_SECRET_KEY\s*=\s*["']AKIA[0-9A-Z]{16}["']'''
+keywords = [
+  "AWS_SECRET_KEY",
+  "AKIA"
+]

@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+echo "Running Gitleaks secret scan..."
+
+gitleaks git --pre-commit --staged --redact --verbose --config .gitleaks.toml
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "Commit blocked: Gitleaks detected a possible secret."
+  echo "Remove the secret from staged files before committing."
+  exit 1
+fi
+
+echo "Gitleaks passed: no secrets detected."
+exit 0
