@@ -1,0 +1,37 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: memory-alert-rule
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: memory.rules
+      rules:
+        - alert: PodMemoryLimitHigh
+          expr: |
+            (
+              max by (namespace, pod, container) (
+                container_memory_working_set_bytes{
+                  namespace="default",
+                  pod!="",
+                  container!="",
+                  container!="POD"
+                }
+              )
+              /
+              max by (namespace, pod, container) (
+                kube_pod_container_resource_limits{
+                  namespace="default",
+                  resource="memory",
+                  unit="byte"
+                }
+              )
+            ) > 0.85
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod memory usage is high"
+            description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is using more than 85% of its memory limit."

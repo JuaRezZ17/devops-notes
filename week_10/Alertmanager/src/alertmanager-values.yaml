@@ -1,0 +1,17 @@
+alertmanager:
+  config:
+    route:
+      receiver: memory-webhook
+      group_by:
+        - alertname
+        - namespace
+        - pod
+      group_wait: 10s
+      group_interval: 30s
+      repeat_interval: 5m
+
+    receivers:
+      - name: memory-webhook
+        webhook_configs:
+          - url: https://webhook.site/7570541c-e6c9-4b4b-b77e-c3d4f2d71ea3
+            send_resolved: true

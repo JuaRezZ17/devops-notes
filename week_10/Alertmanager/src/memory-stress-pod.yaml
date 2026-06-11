@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: memory-stress-pod
+  namespace: default
+spec:
+  containers:
+    - name: memory-stress-container
+      image: polinux/stress:1.0.4
+      args:
+        - "--vm"
+        - "1"
+        - "--vm-bytes"
+        - "180M"
+        - "--vm-keep"
+        - "--timeout"
+        - "10m"
+      resources:
+        requests:
+          memory: "100Mi"
+        limits:
+          memory: "200Mi"
+  restartPolicy: Never
