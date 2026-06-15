@@ -1,0 +1,14 @@
+app:
+  name: ${{ values.appName }}
+  port: ${{ values.port }}
+
+service:
+  type: ClusterIP
+  port: ${{ values.port }}
+
+database:
+  enabled: ${{ values.databaseEnabled }}
+
+image:
+  repository: my-registry/${{ values.appName }}
+  tag: latest

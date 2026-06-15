@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+
+metadata:
+  name: ${{ values.appName }}
+  description: Flask service generated from a Backstage software template
+  tags:
+    - python
+    - flask
+    - kubernetes
+
+spec:
+  type: service
+  lifecycle: experimental
+  owner: platform-team

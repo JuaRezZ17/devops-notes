@@ -1,0 +1,78 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+
+metadata:
+  name: flask-service-template
+  title: Flask Service Template
+  description: Creates a Flask microservice configuration using the company Helm chart
+  tags:
+    - python
+    - flask
+    - kubernetes
+    - helm
+
+spec:
+  owner: platform-team
+  type: service
+
+  parameters:
+    - title: Application configuration
+      required:
+        - appName
+        - port
+      properties:
+        appName:
+          title: Application name
+          type: string
+          description: Name of the new Flask application
+          pattern: '^[a-z][a-z0-9-]*$'
+          ui:autofocus: true
+
+        databaseEnabled:
+          title: Enable database
+          type: boolean
+          description: Select if the application needs a database
+          default: false
+
+        port:
+          title: Application port
+          type: integer
+          description: Port where the Flask application will listen
+          default: 5000
+          minimum: 1
+          maximum: 65535
+
+  steps:
+    - id: generateFiles
+      name: Generate application configuration
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          appName: ${{ parameters.appName }}
+          databaseEnabled: ${{ parameters.databaseEnabled }}
+          port: ${{ parameters.port }}
+          chartPath: ../week-05-helm/flask-service-chart
+
+    - id: showHelmMapping
+      name: Show Helm mapping
+      action: debug:log
+      input:
+        message: |
+          The developer only selected:
+          - Application name: ${{ parameters.appName }}
+          - Database enabled: ${{ parameters.databaseEnabled }}
+          - Port: ${{ parameters.port }}
+
+          Internally, the platform would call:
+          helm upgrade --install ${{ parameters.appName }} ../week-05-helm/flask-service-chart \
+            --namespace ${{ parameters.appName }} \
+            --create-namespace \
+            -f helm/values.yaml
+
+  output:
+    text:
+      - title: Helm deployment
+        content: |
+          The template generates a Helm values file and a deploy script.
+          The developer does not need to know Helm, Kubernetes or Terraform internals.
